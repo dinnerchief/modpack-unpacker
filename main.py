@@ -154,15 +154,15 @@ async def main(modpack_filepath):
                 if info.filename.startswith("shaders/"):
                     dest = os.path.join(modpack_dir, "shaderpacks", filename)
                     break
-                elif info.filename == "pack.mcmeta":
+                if info.filename == "pack.mcmeta":
                     dest = os.path.join(modpack_dir, "resourcepacks", filename)
                     break
-                else:
-                    dest = None
+                dest = None
 
             if dest is None:
                 logger.warning("Unknown ZIP file: " + mod_path)
-                
+
+        if os.path.exists(dest): os.remove(dest)
         if dest:
             os.makedirs(os.path.dirname(dest), exist_ok=True)
             os.rename(mod_path, dest)
