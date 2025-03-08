@@ -130,9 +130,9 @@ async def main(modpack_filepath):
                 download_mods(manifest, mods_dir, None),
                 loop.run_in_executor(executor, extract_overrides, zf, modpack_dir)
             ]
-            err_mods, _ = await asyncio.gather(*tasks)
+            res_mods, _ = await asyncio.gather(*tasks)
 
-
+        err_mods = [r for r in res_mods if r[1]]
         if len(err_mods):
             logger.info(
                 "This mods has errors:\n" +
