@@ -64,7 +64,7 @@ def extract_overrides(zf: ZipFile, dest: str):
     try:
         with TemporaryDirectory() as temp_dir:
             for info in zf.filelist:
-                if not info.filename.startswith("overrides/"):
+                if not info.filename.startswith("overrides/") or info.is_dir():
                     continue
                 
                 extract_tmp_path = os.path.join(temp_dir, info.filename[10:]) # len("overrides/") = 10
