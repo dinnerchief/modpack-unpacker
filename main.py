@@ -150,9 +150,15 @@ async def main(modpack_filepath):
         dest = None
         with ZipFile(mod_path) as zf:
             for info in zf.filelist:
+                
                 if info.filename.startswith("shaders/"):
                     dest = os.path.join(modpack_dir, "shaderpacks", filename)
                     break
+
+                if info.filename == "pack.mcmeta":
+                    dest = os.path.join(modpack_dir, "resourcepacks", filename)
+                    break
+
             dest = None
             logger.warning("Unknown ZIP file: " + mod_path)
         if dest:
