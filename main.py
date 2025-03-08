@@ -143,8 +143,24 @@ async def main(modpack_filepath):
                 ])
             )
 
+    for filename in os.listdir(mods_dir):
+        if not filename.endswith(".zip"): continue
+        mod_path = os.path.join(mods_dir, filename)
+        
+        dest = None
+        with ZipFile(mod_path) as zf:
+            for info in zf.filelist:
+                if info.filename.startswith("shaders/"):
+                    dest = os.path.join(modpack_dir, "shaderpacks", filename)
+                    break
+            dest = None
+            logger.warning("Unknown ZIP file: " + mod_path)
+        if dest:
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
+            os.rename(mod_path, dest)
 
-        logger.info("Modpack loaded!")
+
+    logger.info("Modpack loaded!")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2 or "-h" in sys.argv or "--help" in sys.argv:
